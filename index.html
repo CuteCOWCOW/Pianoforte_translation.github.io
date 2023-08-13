@@ -1,0 +1,1212 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <title>Samples for Autoencoder based Music Translation</title>
+    <style type="text/css">
+body, input, select, td, li, div, textarea, p {
+	font-size: 11px;
+	line-height: 16px;
+	font-family: verdana, arial, sans-serif;
+}
+
+/*body {*/
+/*	margin:5px;*/
+/*	background-color:white;*/
+/*}*/
+
+h1 {
+	font-size:16px;
+	font-weight:bold;
+}
+
+h2 {
+	font-size:14px;
+	font-weight:bold;
+}
+
+
+    </style>
+    <script src="js/jquery.min.js" ></script>
+
+    <style>
+        .audio.green-audio-player {
+            width: 300px;
+            min-width: 200px;
+            height: 56px;
+            box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.07);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-left: 24px;
+            padding-right: 24px;
+            border-radius: 4px;
+            user-select: none;
+            -webkit-user-select: none;
+            background-color: #fff;
+        }
+.highlighted-player {
+    background-color: #ffd54f;       /* 更加明亮的背景颜色 */
+    border: 5px solid #ff6f00;      /* 更宽、更深的边框颜色 */
+    box-shadow: 0 0 10px 2px rgba(255, 111, 0, 0.5);  /* 添加橙色的阴影效果 */
+}
+
+            .audio.green-audio-player .play-pause-btn {
+                display: none;
+                cursor: pointer;
+            }
+
+            .audio.green-audio-player .spinner {
+                width: 18px;
+                height: 18px;
+                background-image: url(img/loading.png);
+                background-size: cover;
+                background-repeat: no-repeat;
+                animation: spin 0.4s linear infinite;
+            }
+
+            .audio.green-audio-player .slider {
+                flex-grow: 1;
+                background-color: #D8D8D8;
+                cursor: pointer;
+                position: relative;
+            }
+
+                .audio.green-audio-player .slider .progress {
+                    background-color: #44BFA3;
+                    border-radius: inherit;
+                    position: absolute;
+                    pointer-events: none;
+                }
+
+                    .audio.green-audio-player .slider .progress .pin {
+                        height: 16px;
+                        width: 16px;
+                        border-radius: 8px;
+                        background-color: #44BFA3;
+                        position: absolute;
+                        pointer-events: all;
+                        box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.32);
+                    }
+
+            .audio.green-audio-player .controls {
+                font-family: 'Roboto', sans-serif;
+                font-size: 16px;
+                line-height: 18px;
+                color: #55606E;
+                display: flex;
+                flex-grow: 1;
+                justify-content: space-between;
+                align-items: center;
+                margin-left: 24px;
+                margin-right: 24px;
+            }
+
+                .audio.green-audio-player .controls .slider {
+                    margin-left: 16px;
+                    margin-right: 16px;
+                    border-radius: 2px;
+                    height: 4px;
+                }
+
+                    .audio.green-audio-player .controls .slider .progress {
+                        width: 0;
+                        height: 100%;
+                    }
+
+                        .audio.green-audio-player .controls .slider .progress .pin {
+                            right: -8px;
+                            top: -6px;
+                        }
+
+                .audio.green-audio-player .controls span {
+                    cursor: default;
+                }
+
+            .audio.green-audio-player .volume {
+                position: relative;
+            }
+
+                .audio.green-audio-player .volume .volume-btn {
+                    cursor: pointer;
+                }
+
+                    .audio.green-audio-player .volume .volume-btn.open path {
+                        fill: #44BFA3;
+                    }
+
+                .audio.green-audio-player .volume .volume-controls {
+                    width: 30px;
+                    height: 135px;
+                    background-color: rgba(0, 0, 0, 0.62);
+                    border-radius: 7px;
+                    position: absolute;
+                    left: -3px;
+                    bottom: 52px;
+                    flex-direction: column;
+                    align-items: center;
+                    display: flex;
+                }
+
+                    .audio.green-audio-player .volume .volume-controls.hidden {
+                        display: none;
+                    }
+
+                    .audio.green-audio-player .volume .volume-controls .slider {
+                        margin-top: 12px;
+                        margin-bottom: 12px;
+                        width: 6px;
+                        border-radius: 3px;
+                    }
+
+                        .audio.green-audio-player .volume .volume-controls .slider .progress {
+                            bottom: 0;
+                            height: 100%;
+                            width: 6px;
+                        }
+
+                            .audio.green-audio-player .volume .volume-controls .slider .progress .pin {
+                                left: -5px;
+                                top: -8px;
+                            }
+
+        svg, img {
+            display: block;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            /*display: flex;*/
+            justify-content: center;
+            align-items: center;
+            background: #F8FFAE;
+            background: -webkit-linear-gradient(-65deg, #43C6AC, #F8FFAE);
+            background: linear-gradient(-65deg, #43C6AC, #F8FFAE);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotateZ(0);
+            }
+
+            to {
+                transform: rotateZ(1turn);
+            }
+        }
+        th {
+    font-size: 20px; /* 您可以按需修改这个值 */
+}
+
+    </style>
+
+  </head>
+
+  <body>
+  <div>
+      <h1 align="center"> Samples for Autoencoder based Music Translation </h1>
+    <h2>Introduction</h2>
+    <p> Each example is a different source domain (instrument). Each column is a different target domain. The red columns are original through the encoder and the decoder of the same.</p>
+</div>
+
+
+<!--    <h2>Example for source domain: Bach Solo Cello </h2>-->
+    <div>
+      <table border = "1" class="inlineTable">
+        <col width="50">
+
+        <col width="200">
+
+        <col width="200">
+
+        <col width="200">
+
+        <tr>
+          <th/>
+          <th/>
+          <th colspan="2">Target</th>
+        </tr>
+        <tr>
+             <th/>
+             <th>Original</th>
+
+             <th>Forte_Piano</th>
+
+             <th>Current_Piano</th>
+
+        </tr>
+
+        <tr>
+           <th> 1 </th>
+           <td>
+               <div class="audio green-audio-player">
+    <div class="loading">
+        <div class="spinner"></div>
+    </div>
+    <div class="play-pause-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 18 24">
+            <path fill="#566574" fill-rule="evenodd" d="M18 12L0 24V0" class="play-pause-icon" id="playPause" />
+        </svg>
+    </div>
+
+    <div class="controls">
+        <span class="current-time">0:00</span>
+        <div class="slider" data-direction="horizontal">
+            <div class="progress">
+                <div class="pin" id="progress-pin-1" data-method="rewind"></div>
+            </div>
+        </div>
+        <span class="total-time">0:00</span>
+    </div>
+
+    <div class="volume">
+        <div class="volume-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path fill="#566574" fill-rule="evenodd" d="M14.667 0v2.747c3.853 1.146 6.666 4.72 6.666 8.946 0 4.227-2.813 7.787-6.666 8.934v2.76C20 22.173 24 17.4 24 11.693 24 5.987 20 1.213 14.667 0zM18 11.693c0-2.36-1.333-4.386-3.333-5.373v10.707c2-.947 3.333-2.987 3.333-5.334zm-18-4v8h5.333L12 22.36V1.027L5.333 7.693H0z" id="speaker" />
+            </svg>
+        </div>
+        <div class="volume-controls hidden">
+            <div class="slider" data-direction="vertical">
+                <div class="progress">
+                    <div class="pin" id="volume-pin-1" data-method="changeVolume"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <audio crossorigin>
+        <source src="music/4/yuan.wav" type="audio/wav">
+    </audio>
+</div>
+
+           </td>
+
+            <td>
+                 <div class="audio green-audio-player">
+    <div class="loading">
+        <div class="spinner"></div>
+    </div>
+    <div class="play-pause-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 18 24">
+            <path fill="#566574" fill-rule="evenodd" d="M18 12L0 24V0" class="play-pause-icon" id="playPause" />
+        </svg>
+    </div>
+
+    <div class="controls">
+        <span class="current-time">0:00</span>
+        <div class="slider" data-direction="horizontal">
+            <div class="progress">
+                <div class="pin" id="progress-pin" data-method="rewind"></div>
+            </div>
+        </div>
+        <span class="total-time">0:00</span>
+    </div>
+
+    <div class="volume">
+        <div class="volume-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path fill="#566574" fill-rule="evenodd" d="M14.667 0v2.747c3.853 1.146 6.666 4.72 6.666 8.946 0 4.227-2.813 7.787-6.666 8.934v2.76C20 22.173 24 17.4 24 11.693 24 5.987 20 1.213 14.667 0zM18 11.693c0-2.36-1.333-4.386-3.333-5.373v10.707c2-.947 3.333-2.987 3.333-5.334zm-18-4v8h5.333L12 22.36V1.027L5.333 7.693H0z" id="speaker" />
+            </svg>
+        </div>
+        <div class="volume-controls hidden">
+            <div class="slider" data-direction="vertical">
+                <div class="progress">
+                    <div class="pin" id="volume-pin" data-method="changeVolume"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <audio crossorigin>
+        <source src="music/4/0.wav" type="audio/wav">
+    </audio>
+</div>
+
+           </td>
+
+
+            <td>
+                <div class="audio green-audio-player highlighted-player">
+    <div class="loading">
+        <div class="spinner"></div>
+    </div>
+    <div class="play-pause-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 18 24">
+            <path fill="#566574" fill-rule="evenodd" d="M18 12L0 24V0" class="play-pause-icon" id="playPause" />
+        </svg>
+    </div>
+
+    <div class="controls">
+        <span class="current-time">0:00</span>
+        <div class="slider" data-direction="horizontal">
+            <div class="progress">
+                <div class="pin" id="progress-pin-1" data-method="rewind"></div>
+            </div>
+        </div>
+        <span class="total-time">0:00</span>
+    </div>
+
+    <div class="volume">
+        <div class="volume-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path fill="#566574" fill-rule="evenodd" d="M14.667 0v2.747c3.853 1.146 6.666 4.72 6.666 8.946 0 4.227-2.813 7.787-6.666 8.934v2.76C20 22.173 24 17.4 24 11.693 24 5.987 20 1.213 14.667 0zM18 11.693c0-2.36-1.333-4.386-3.333-5.373v10.707c2-.947 3.333-2.987 3.333-5.334zm-18-4v8h5.333L12 22.36V1.027L5.333 7.693H0z" id="speaker" />
+            </svg>
+        </div>
+        <div class="volume-controls hidden">
+            <div class="slider" data-direction="vertical">
+                <div class="progress">
+                    <div class="pin" id="volume-pin-1" data-method="changeVolume"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <audio crossorigin>
+        <source src=music/4/1.wav type="audio/wav">
+    </audio>
+</div>
+
+           </td>
+
+        </tr>
+
+              <tr>
+           <th> 2 </th>
+           <td>
+               <div class="audio green-audio-player">
+    <div class="loading">
+        <div class="spinner"></div>
+    </div>
+    <div class="play-pause-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 18 24">
+            <path fill="#566574" fill-rule="evenodd" d="M18 12L0 24V0" class="play-pause-icon" id="playPause" />
+        </svg>
+    </div>
+
+    <div class="controls">
+        <span class="current-time">0:00</span>
+        <div class="slider" data-direction="horizontal">
+            <div class="progress">
+                <div class="pin" id="progress-pin-1" data-method="rewind"></div>
+            </div>
+        </div>
+        <span class="total-time">0:00</span>
+    </div>
+
+    <div class="volume">
+        <div class="volume-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path fill="#566574" fill-rule="evenodd" d="M14.667 0v2.747c3.853 1.146 6.666 4.72 6.666 8.946 0 4.227-2.813 7.787-6.666 8.934v2.76C20 22.173 24 17.4 24 11.693 24 5.987 20 1.213 14.667 0zM18 11.693c0-2.36-1.333-4.386-3.333-5.373v10.707c2-.947 3.333-2.987 3.333-5.334zm-18-4v8h5.333L12 22.36V1.027L5.333 7.693H0z" id="speaker" />
+            </svg>
+        </div>
+        <div class="volume-controls hidden">
+            <div class="slider" data-direction="vertical">
+                <div class="progress">
+                    <div class="pin" id="volume-pin-1" data-method="changeVolume"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <audio crossorigin>
+        <source src="music/4/yuan.wav" type="audio/wav">
+    </audio>
+</div>
+
+           </td>
+
+            <td>
+                 <div class="audio green-audio-player">
+    <div class="loading">
+        <div class="spinner"></div>
+    </div>
+    <div class="play-pause-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 18 24">
+            <path fill="#566574" fill-rule="evenodd" d="M18 12L0 24V0" class="play-pause-icon" id="playPause" />
+        </svg>
+    </div>
+
+    <div class="controls">
+        <span class="current-time">0:00</span>
+        <div class="slider" data-direction="horizontal">
+            <div class="progress">
+                <div class="pin" id="progress-pin" data-method="rewind"></div>
+            </div>
+        </div>
+        <span class="total-time">0:00</span>
+    </div>
+
+    <div class="volume">
+        <div class="volume-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path fill="#566574" fill-rule="evenodd" d="M14.667 0v2.747c3.853 1.146 6.666 4.72 6.666 8.946 0 4.227-2.813 7.787-6.666 8.934v2.76C20 22.173 24 17.4 24 11.693 24 5.987 20 1.213 14.667 0zM18 11.693c0-2.36-1.333-4.386-3.333-5.373v10.707c2-.947 3.333-2.987 3.333-5.334zm-18-4v8h5.333L12 22.36V1.027L5.333 7.693H0z" id="speaker" />
+            </svg>
+        </div>
+        <div class="volume-controls hidden">
+            <div class="slider" data-direction="vertical">
+                <div class="progress">
+                    <div class="pin" id="volume-pin" data-method="changeVolume"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <audio crossorigin>
+        <source src="music/4/yuan.wav" type="audio/wav">
+    </audio>
+</div>
+
+           </td>
+
+
+            <td>
+                <div class="audio green-audio-player highlighted-player">
+    <div class="loading">
+        <div class="spinner"></div>
+    </div>
+    <div class="play-pause-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 18 24">
+            <path fill="#566574" fill-rule="evenodd" d="M18 12L0 24V0" class="play-pause-icon" id="playPause" />
+        </svg>
+    </div>
+
+    <div class="controls">
+        <span class="current-time">0:00</span>
+        <div class="slider" data-direction="horizontal">
+            <div class="progress">
+                <div class="pin" id="progress-pin-1" data-method="rewind"></div>
+            </div>
+        </div>
+        <span class="total-time">0:00</span>
+    </div>
+
+    <div class="volume">
+        <div class="volume-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path fill="#566574" fill-rule="evenodd" d="M14.667 0v2.747c3.853 1.146 6.666 4.72 6.666 8.946 0 4.227-2.813 7.787-6.666 8.934v2.76C20 22.173 24 17.4 24 11.693 24 5.987 20 1.213 14.667 0zM18 11.693c0-2.36-1.333-4.386-3.333-5.373v10.707c2-.947 3.333-2.987 3.333-5.334zm-18-4v8h5.333L12 22.36V1.027L5.333 7.693H0z" id="speaker" />
+            </svg>
+        </div>
+        <div class="volume-controls hidden">
+            <div class="slider" data-direction="vertical">
+                <div class="progress">
+                    <div class="pin" id="volume-pin-1" data-method="changeVolume"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <audio crossorigin>
+        <source src=music/4/1.wav type="audio/wav">
+    </audio>
+</div>
+
+           </td>
+
+        </tr>
+
+        <tr>
+          <th> 3 </th>
+                       <td>
+               <div class="audio green-audio-player">
+    <div class="loading">
+        <div class="spinner"></div>
+    </div>
+    <div class="play-pause-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 18 24">
+            <path fill="#566574" fill-rule="evenodd" d="M18 12L0 24V0" class="play-pause-icon" id="playPause" />
+        </svg>
+    </div>
+
+    <div class="controls">
+        <span class="current-time">0:00</span>
+        <div class="slider" data-direction="horizontal">
+            <div class="progress">
+                <div class="pin" id="progress-pin-1" data-method="rewind"></div>
+            </div>
+        </div>
+        <span class="total-time">0:00</span>
+    </div>
+
+    <div class="volume">
+        <div class="volume-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path fill="#566574" fill-rule="evenodd" d="M14.667 0v2.747c3.853 1.146 6.666 4.72 6.666 8.946 0 4.227-2.813 7.787-6.666 8.934v2.76C20 22.173 24 17.4 24 11.693 24 5.987 20 1.213 14.667 0zM18 11.693c0-2.36-1.333-4.386-3.333-5.373v10.707c2-.947 3.333-2.987 3.333-5.334zm-18-4v8h5.333L12 22.36V1.027L5.333 7.693H0z" id="speaker" />
+            </svg>
+        </div>
+        <div class="volume-controls hidden">
+            <div class="slider" data-direction="vertical">
+                <div class="progress">
+                    <div class="pin" id="volume-pin-1" data-method="changeVolume"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <audio crossorigin>
+        <source src="music/5/yuan.wav" type="audio/wav">
+    </audio>
+</div>
+
+           </td>
+
+            <td>
+                 <div class="audio green-audio-player">
+    <div class="loading">
+        <div class="spinner"></div>
+    </div>
+    <div class="play-pause-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 18 24">
+            <path fill="#566574" fill-rule="evenodd" d="M18 12L0 24V0" class="play-pause-icon" id="playPause" />
+        </svg>
+    </div>
+
+    <div class="controls">
+        <span class="current-time">0:00</span>
+        <div class="slider" data-direction="horizontal">
+            <div class="progress">
+                <div class="pin" id="progress-pin" data-method="rewind"></div>
+            </div>
+        </div>
+        <span class="total-time">0:00</span>
+    </div>
+
+    <div class="volume">
+        <div class="volume-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path fill="#566574" fill-rule="evenodd" d="M14.667 0v2.747c3.853 1.146 6.666 4.72 6.666 8.946 0 4.227-2.813 7.787-6.666 8.934v2.76C20 22.173 24 17.4 24 11.693 24 5.987 20 1.213 14.667 0zM18 11.693c0-2.36-1.333-4.386-3.333-5.373v10.707c2-.947 3.333-2.987 3.333-5.334zm-18-4v8h5.333L12 22.36V1.027L5.333 7.693H0z" id="speaker" />
+            </svg>
+        </div>
+        <div class="volume-controls hidden">
+            <div class="slider" data-direction="vertical">
+                <div class="progress">
+                    <div class="pin" id="volume-pin" data-method="changeVolume"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <audio crossorigin>
+        <source src="music/5/0.wav" type="audio/wav">
+    </audio>
+</div>
+
+           </td>
+
+
+            <td>
+                <div class="audio green-audio-player highlighted-player">
+    <div class="loading">
+        <div class="spinner"></div>
+    </div>
+    <div class="play-pause-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 18 24">
+            <path fill="#566574" fill-rule="evenodd" d="M18 12L0 24V0" class="play-pause-icon" id="playPause" />
+        </svg>
+    </div>
+
+    <div class="controls">
+        <span class="current-time">0:00</span>
+        <div class="slider" data-direction="horizontal">
+            <div class="progress">
+                <div class="pin" id="progress-pin-1" data-method="rewind"></div>
+            </div>
+        </div>
+        <span class="total-time">0:00</span>
+    </div>
+
+    <div class="volume">
+        <div class="volume-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path fill="#566574" fill-rule="evenodd" d="M14.667 0v2.747c3.853 1.146 6.666 4.72 6.666 8.946 0 4.227-2.813 7.787-6.666 8.934v2.76C20 22.173 24 17.4 24 11.693 24 5.987 20 1.213 14.667 0zM18 11.693c0-2.36-1.333-4.386-3.333-5.373v10.707c2-.947 3.333-2.987 3.333-5.334zm-18-4v8h5.333L12 22.36V1.027L5.333 7.693H0z" id="speaker" />
+            </svg>
+        </div>
+        <div class="volume-controls hidden">
+            <div class="slider" data-direction="vertical">
+                <div class="progress">
+                    <div class="pin" id="volume-pin-1" data-method="changeVolume"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <audio crossorigin>
+        <source src=music/5/1.wav type="audio/wav">
+    </audio>
+</div>
+
+           </td>
+
+
+        </tr>
+
+
+      </table>
+    </div>
+
+<!--    <h2>Example for source domain: Beethoven Solo Piano</h2>-->
+<!--    <div>-->
+<!--      <table border = "1" class="inlineTable">-->
+<!--        <col width="50">-->
+
+<!--        <col width="200">-->
+
+<!--        <col width="200">-->
+
+<!--        <col width="200">-->
+
+<!--        <col width="200">-->
+
+<!--        <col width="200">-->
+
+<!--        <col width="200">-->
+
+<!--        <col width="200">-->
+<!--        <tr>-->
+<!--          <th/>-->
+<!--          <th/>-->
+<!--          <th colspan="2">Target</th>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--             <th/>-->
+
+<!--             <th>Original</th>-->
+
+<!--             <th>Forte_Piano</th>-->
+
+<!--             <th>Current_Piano</th>-->
+
+<!--        </tr>-->
+
+<!--        <tr>-->
+<!--          <th> 6 </th>-->
+<!--           <td>-->
+
+<!--             <audio controls style="width: 150px;">-->
+<!--               <source src=1/0.wav type="audio/wav">-->
+<!--               Your browser does not support the audio element.-->
+<!--             </audio>-->
+<!--           </td>-->
+
+
+<!--            <td>-->
+
+<!--             <audio controls style="width: 150px;">-->
+<!--               <source src=1/0_0.wav type="audio/wav">-->
+<!--               Your browser does not support the audio element.-->
+<!--             </audio>-->
+<!--           </td>-->
+
+
+<!--            <td bgcolor="#FF0000">-->
+
+<!--             <audio controls style="width: 150px;">-->
+<!--               <source src=1/0_1.wav type="audio/wav">-->
+<!--               Your browser does not support the audio element.-->
+<!--             </audio>-->
+<!--           </td>-->
+
+
+<!--            <td>-->
+<!--             <audio controls style="width: 150px;">-->
+<!--               <source src=1/0_2.wav type="audio/wav">-->
+<!--               Your browser does not support the audio element.-->
+<!--             </audio>-->
+<!--           </td>-->
+
+<!--           <td>-->
+<!--            <audio controls style="width: 150px;">-->
+<!--              <source src=1/0_3.wav type="audio/wav">-->
+<!--              Your browser does not support the audio element.-->
+<!--            </audio>-->
+<!--          </td>-->
+
+<!--            <td>-->
+
+<!--             <audio controls style="width: 150px;">-->
+<!--               <source src=1/0_4.wav type="audio/wav">-->
+<!--               Your browser does not support the audio element.-->
+<!--             </audio>-->
+<!--           </td>-->
+
+
+<!--            <td>-->
+
+<!--             <audio controls style="width: 150px;">-->
+<!--               <source src=1/0_5.wav type="audio/wav">-->
+<!--               Your browser does not support the audio element.-->
+<!--             </audio>-->
+<!--           </td>-->
+
+<!--        </tr>-->
+
+<!--        <tr>-->
+<!--          <th> 7 </th>-->
+<!--           <td>-->
+
+<!--             <audio controls style="width: 150px;">-->
+<!--               <source src=1/1.wav type="audio/wav">-->
+<!--               Your browser does not support the audio element.-->
+<!--             </audio>-->
+<!--           </td>-->
+
+
+<!--            <td>-->
+
+<!--             <audio controls style="width: 150px;">-->
+<!--               <source src=1/1_0.wav type="audio/wav">-->
+<!--               Your browser does not support the audio element.-->
+<!--             </audio>-->
+<!--           </td>-->
+
+
+<!--            <td bgcolor="#FF0000">-->
+
+<!--             <audio controls style="width: 150px;">-->
+<!--               <source src=1/1_1.wav type="audio/wav">-->
+<!--               Your browser does not support the audio element.-->
+<!--             </audio>-->
+<!--           </td>-->
+
+
+<!--            <td>-->
+
+<!--             <audio controls style="width: 150px;">-->
+<!--               <source src=1/1_2.wav type="audio/wav">-->
+<!--               Your browser does not support the audio element.-->
+<!--             </audio>-->
+<!--           </td>-->
+
+<!--           <td>-->
+<!--            <audio controls style="width: 150px;">-->
+<!--              <source src=1/1_3.wav type="audio/wav">-->
+<!--              Your browser does not support the audio element.-->
+<!--            </audio>-->
+<!--           </td>-->
+
+<!--            <td>-->
+
+<!--             <audio controls style="width: 150px;">-->
+<!--               <source src=1/1_4.wav type="audio/wav">-->
+<!--               Your browser does not support the audio element.-->
+<!--             </audio>-->
+<!--           </td>-->
+
+
+<!--            <td>-->
+
+<!--             <audio controls style="width: 150px;">-->
+<!--               <source src=1/1_5.wav type="audio/wav">-->
+<!--               Your browser does not support the audio element.-->
+<!--             </audio>-->
+<!--           </td>-->
+
+<!--        </tr>-->
+
+<!--        <tr>-->
+<!--          <th> 8 </th>-->
+<!--           <td>-->
+
+<!--             <audio controls style="width: 150px;">-->
+<!--               <source src=1/2.wav type="audio/wav">-->
+<!--               Your browser does not support the audio element.-->
+<!--             </audio>-->
+<!--           </td>-->
+
+
+<!--            <td>-->
+
+<!--             <audio controls style="width: 150px;">-->
+<!--               <source src=1/2_0.wav type="audio/wav">-->
+<!--               Your browser does not support the audio element.-->
+<!--             </audio>-->
+<!--           </td>-->
+
+
+<!--            <td bgcolor="#FF0000">-->
+
+<!--             <audio controls style="width: 150px;">-->
+<!--               <source src=1/2_1.wav type="audio/wav">-->
+<!--               Your browser does not support the audio element.-->
+<!--             </audio>-->
+<!--           </td>-->
+
+
+<!--            <td>-->
+
+<!--             <audio controls style="width: 150px;">-->
+<!--               <source src=1/2_2.wav type="audio/wav">-->
+<!--               Your browser does not support the audio element.-->
+<!--             </audio>-->
+<!--           </td>-->
+
+<!--           <td>-->
+<!--            <audio controls style="width: 150px;">-->
+<!--              <source src=1/2_3.wav type="audio/wav">-->
+<!--              Your browser does not support the audio element.-->
+<!--            </audio>-->
+<!--           </td>-->
+
+<!--            <td>-->
+<!--             <audio controls style="width: 150px;">-->
+<!--               <source src=1/2_4.wav type="audio/wav">-->
+<!--               Your browser does not support the audio element.-->
+<!--             </audio>-->
+<!--           </td>-->
+
+
+<!--            <td>-->
+
+<!--             <audio controls style="width: 150px;">-->
+<!--               <source src=1/2_5.wav type="audio/wav">-->
+<!--               Your browser does not support the audio element.-->
+<!--             </audio>-->
+<!--           </td>-->
+
+<!--        </tr>-->
+
+<!--        <tr>-->
+<!--          <th> 9 </th>-->
+<!--           <td>-->
+
+<!--             <audio controls style="width: 150px;">-->
+<!--               <source src=1/3.wav type="audio/wav">-->
+<!--               Your browser does not support the audio element.-->
+<!--             </audio>-->
+<!--           </td>-->
+
+
+<!--            <td>-->
+
+<!--             <audio controls style="width: 150px;">-->
+<!--               <source src=1/3_0.wav type="audio/wav">-->
+<!--               Your browser does not support the audio element.-->
+<!--             </audio>-->
+<!--           </td>-->
+
+
+<!--            <td bgcolor="#FF0000">-->
+
+<!--             <audio controls style="width: 150px;">-->
+<!--               <source src=1/3_1.wav type="audio/wav">-->
+<!--               Your browser does not support the audio element.-->
+<!--             </audio>-->
+<!--           </td>-->
+
+
+<!--            <td>-->
+
+<!--             <audio controls style="width: 150px;">-->
+<!--               <source src=1/3_2.wav type="audio/wav">-->
+<!--               Your browser does not support the audio element.-->
+<!--             </audio>-->
+<!--           </td>-->
+
+<!--           <td>-->
+<!--            <audio controls style="width: 150px;">-->
+<!--              <source src=1/3_3.wav type="audio/wav">-->
+<!--              Your browser does not support the audio element.-->
+<!--            </audio>-->
+<!--          </td>-->
+
+
+<!--            <td>-->
+
+<!--             <audio controls style="width: 150px;">-->
+<!--               <source src=1/3_4.wav type="audio/wav">-->
+<!--               Your browser does not support the audio element.-->
+<!--             </audio>-->
+<!--           </td>-->
+
+
+<!--            <td>-->
+
+<!--             <audio controls style="width: 150px;">-->
+<!--               <source src=1/3_5.wav type="audio/wav">-->
+<!--               Your browser does not support the audio element.-->
+<!--             </audio>-->
+<!--           </td>-->
+
+<!--        </tr>-->
+
+<!--        <tr>-->
+<!--          <th> 10 </th>-->
+<!--           <td>-->
+
+<!--             <audio controls style="width: 150px;">-->
+<!--               <source src=1/4.wav type="audio/wav">-->
+<!--               Your browser does not support the audio element.-->
+<!--             </audio>-->
+<!--           </td>-->
+
+
+<!--            <td>-->
+<!--             <audio controls style="width: 150px;">-->
+<!--               <source src=1/4_0.wav type="audio/wav">-->
+<!--               Your browser does not support the audio element.-->
+<!--             </audio>-->
+<!--           </td>-->
+
+
+<!--            <td  bgcolor="#FF0000">-->
+
+<!--             <audio controls style="width: 150px;">-->
+<!--               <source src=1/4_1.wav type="audio/wav">-->
+<!--               Your browser does not support the audio element.-->
+<!--             </audio>-->
+<!--           </td>-->
+
+
+<!--            <td>-->
+
+<!--             <audio controls style="width: 150px;">-->
+<!--               <source src=1/4_2.wav type="audio/wav">-->
+<!--               Your browser does not support the audio element.-->
+<!--             </audio>-->
+<!--           </td>-->
+
+<!--           <td>-->
+<!--            <audio controls style="width: 150px;">-->
+<!--              <source src=1/4_3.wav type="audio/wav">-->
+<!--              Your browser does not support the audio element.-->
+<!--            </audio>-->
+<!--          </td>-->
+
+
+<!--            <td>-->
+
+<!--             <audio controls style="width: 150px;">-->
+<!--               <source src=1/4_4.wav type="audio/wav">-->
+<!--               Your browser does not support the audio element.-->
+<!--             </audio>-->
+<!--           </td>-->
+
+
+<!--            <td>-->
+<!--             <audio controls style="width: 150px;">-->
+<!--               <source src=1/4_5.wav type="audio/wav">-->
+<!--               Your browser does not support the audio element.-->
+<!--             </audio>-->
+<!--           </td>-->
+
+<!--        </tr>-->
+
+<!--      </table>-->
+<!--    </div>-->
+
+
+    <script>
+        'use strict';
+
+  function initializeAudioPlayer(audioPlayer) {
+      var playPause = audioPlayer.querySelector('#playPause');
+      var playpauseBtn = audioPlayer.querySelector('.play-pause-btn');
+      var loading = audioPlayer.querySelector('.loading');
+      var progress = audioPlayer.querySelector('.progress');
+      var sliders = audioPlayer.querySelectorAll('.slider');
+      var volumeBtn = audioPlayer.querySelector('.volume-btn');
+      var volumeControls = audioPlayer.querySelector('.volume-controls');
+      var volumeProgress = volumeControls.querySelector('.slider .progress');
+      var player = audioPlayer.querySelector('audio');
+      var currentTime = audioPlayer.querySelector('.current-time');
+      var totalTime = audioPlayer.querySelector('.total-time');
+      var speaker = audioPlayer.querySelector('#speaker');
+      var currentlyDragged = null;
+
+      var draggableClasses = ['pin'];
+window.addEventListener('mousedown', function(event) {
+    if (!isDraggable(event.target)) return false;
+
+    currentlyDragged = event.target;
+    var handleMethod = currentlyDragged.dataset.method;
+
+    var correctMouseMoveHandler;
+
+    if (handleMethod === "rewind") {
+        correctMouseMoveHandler = function(e) {
+            if (e.target !== audioPlayer && !audioPlayer.contains(e.target)) return;
+            rewind(e, currentlyDragged);
+        };
+        this.addEventListener('mousemove', correctMouseMoveHandler, false);
+    } else if (handleMethod === "changeVolume") {
+        correctMouseMoveHandler = function(e) {
+            if (e.target !== audioPlayer && !audioPlayer.contains(e.target)) return;
+            changeVolume(e, currentlyDragged);
+        };
+        this.addEventListener('mousemove', correctMouseMoveHandler, false);
+    }
+
+    window.addEventListener('mouseup', function(evt) {
+        if (evt.target !== audioPlayer && !audioPlayer.contains(evt.target)) {
+            currentlyDragged = false;
+            window.removeEventListener('mousemove', correctMouseMoveHandler, false);
+        }
+    }, false);
+
+    audioPlayer.addEventListener('mousemove', correctMouseMoveHandler, false);
+    audioPlayer.addEventListener('mouseup', function() {
+        currentlyDragged = false;
+        audioPlayer.removeEventListener('mousemove', correctMouseMoveHandler, false);
+    }, false);
+});
+
+
+      playpauseBtn.addEventListener('click', togglePlay);
+      player.addEventListener('timeupdate', updateProgress);
+      player.addEventListener('volumechange', updateVolume);
+      player.addEventListener('loadedmetadata', function () {
+          totalTime.textContent = formatTime(player.duration);
+      });
+      player.addEventListener('canplay', makePlay);
+      player.addEventListener('ended', function () {
+          playPause.attributes.d.value = "M18 12L0 24V0";
+          player.currentTime = 0;
+      });
+
+      volumeBtn.addEventListener('click', function () {
+          volumeBtn.classList.toggle('open');
+          volumeControls.classList.toggle('hidden');
+      });
+
+      window.addEventListener('resize', directionAware);
+
+      sliders.forEach(function (slider) {
+          var pin = slider.querySelector('.pin');
+          slider.addEventListener('click', window[pin.dataset.method]);
+      });
+
+      directionAware();
+
+      function isDraggable(el) {
+          var canDrag = false;
+          var classes = Array.from(el.classList);
+          draggableClasses.forEach(function (draggable) {
+              if (classes.indexOf(draggable) !== -1) canDrag = true;
+          });
+          return canDrag;
+      }
+
+      function inRange(event) {
+          var rangeBox = getRangeBox(event);
+          var rect = rangeBox.getBoundingClientRect();
+          var direction = rangeBox.dataset.direction;
+          if (direction == 'horizontal') {
+              var min = rangeBox.offsetLeft;
+              var max = min + rangeBox.offsetWidth;
+              if (event.clientX < min || event.clientX > max) return false;
+          } else {
+              var min = rect.top;
+              var max = min + rangeBox.offsetHeight;
+              if (event.clientY < min || event.clientY > max) return false;
+          }
+          return true;
+      }
+
+      function updateProgress() {
+          var current = player.currentTime;
+          var percent = current / player.duration * 100;
+          progress.style.width = percent + '%';
+
+          currentTime.textContent = formatTime(current);
+      }
+
+      function updateVolume() {
+          volumeProgress.style.height = player.volume * 100 + '%';
+          if (player.volume >= 0.5) {
+              speaker.attributes.d.value = 'M14.667 0v2.747c3.853 1.146 6.666 4.72 6.666 8.946 0 4.227-2.813 7.787-6.666 8.934v2.76C20 22.173 24 17.4 24 11.693 24 5.987 20 1.213 14.667 0zM18 11.693c0-2.36-1.333-4.386-3.333-5.373v10.707c2-.947 3.333-2.987 3.333-5.334zm-18-4v8h5.333L12 22.36V1.027L5.333 7.693H0z';
+          } else if (player.volume < 0.5 && player.volume > 0.05) {
+              speaker.attributes.d.value = 'M0 7.667v8h5.333L12 22.333V1L5.333 7.667M17.333 11.373C17.333 9.013 16 6.987 14 6v10.707c2-.947 3.333-2.987 3.333-5.334z';
+          } else if (player.volume <= 0.05) {
+              speaker.attributes.d.value = 'M0 7.667v8h5.333L12 22.333V1L5.333 7.667';
+          }
+      }
+
+      function getRangeBox(event) {
+          var rangeBox = event.target;
+          var el = currentlyDragged;
+          if (event.type == 'click' && isDraggable(event.target)) {
+              rangeBox = event.target.parentElement.parentElement;
+          }
+          if (event.type == 'mousemove') {
+              rangeBox = el.parentElement.parentElement;
+          }
+          return rangeBox;
+      }
+
+      function getCoefficient(event) {
+          var slider = getRangeBox(event);
+          var rect = slider.getBoundingClientRect();
+          var K = 0;
+          if (slider.dataset.direction == 'horizontal') {
+
+              var offsetX = event.clientX - slider.offsetLeft;
+              var width = slider.clientWidth;
+              K = offsetX / width;
+          } else if (slider.dataset.direction == 'vertical') {
+
+              var height = slider.clientHeight;
+              var offsetY = event.clientY - rect.top;
+              K = 1 - offsetY / height;
+          }
+          return K;
+      }
+
+      function rewind(event) {
+          if (inRange(event)) {
+              player.currentTime = player.duration * getCoefficient(event);
+          }
+      }
+
+      function changeVolume(event) {
+          if (inRange(event)) {
+              player.volume = getCoefficient(event);
+          }
+      }
+
+      function formatTime(time) {
+          var min = Math.floor(time / 60);
+          var sec = Math.floor(time % 60);
+          return min + ':' + (sec < 10 ? '0' + sec : sec);
+      }
+
+      function togglePlay() {
+          if (player.paused) {
+              playPause.attributes.d.value = "M0 0h6v24H0zM12 0h6v24h-6z";
+              player.play();
+          } else {
+              playPause.attributes.d.value = "M18 12L0 24V0";
+              player.pause();
+          }
+      }
+
+      function makePlay() {
+          playpauseBtn.style.display = 'block';
+          loading.style.display = 'none';
+      }
+
+      function directionAware() {
+          if (window.innerHeight < 250) {
+              volumeControls.style.bottom = '-54px';
+              volumeControls.style.left = '54px';
+          } else if (audioPlayer.offsetTop < 154) {
+              volumeControls.style.bottom = '-164px';
+              volumeControls.style.left = '-3px';
+          } else {
+              volumeControls.style.bottom = '52px';
+              volumeControls.style.left = '-3px';
+          }
+      }
+  }
+        // Once the DOM is loaded, initialize each audio player
+document.addEventListener('DOMContentLoaded', function() {
+    var audioPlayers = document.querySelectorAll('.green-audio-player');
+    audioPlayers.forEach(function(playerElement) {
+        initializeAudioPlayer(playerElement);});
+    });
+    </script>
+
+  </body>
+</html>
