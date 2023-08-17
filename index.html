@@ -188,6 +188,19 @@ h2 {
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
+div.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 400px;
+}
+
+img.center-resize {
+    width: 900px;
+    height: 400px;
+}
+
+
 
         @keyframes spin {
             from {
@@ -202,7 +215,15 @@ h2 {
     font-size: 20px; /* 您可以按需修改这个值 */
 }
         p{
-            font-size: 20px;
+            font-size: 15px;
+            font-family: 'Georgia', serif; /* 使用Georgia字体，如果无法加载则使用serif备选字体 */
+    line-height: 1.6; /* 行间距 */
+        }
+        h1{
+            font-size: 30px;
+        }
+        h2{
+            font-size: 25px;
         }
 
     </style>
@@ -213,11 +234,20 @@ h2 {
   <div>
       <h1 align="center"> Samples for Forte Piano Restoration Model </h1>
     <h2>Introduction</h2>
-    <p> The red columns are original through the encoder and the decoder of the same.</p>
+    <p> The first method is based on training multiple autoencoder pathways, one per musical domain. As shown in the figure, a universal encoder will convert the input waveform into a latent representation that eliminates the instrument domain information, and the wavenet decoder of each domain will restore the latent representation back to the audio of the corresponding musical instrument performance. And only During training, the domain discriminator is deployed to enforce encoder remove the instrument information.
+    </p>
+<div class="container">
+    <img src="pic1.png" alt="Description" class="center-resize">
 </div>
 
 
-<!--    <h2>Example for source domain: Bach Solo Cello </h2>-->
+
+      <p>The <strong>red columns</strong> are original through the encoder and the decoder of the same. This means that the <strong>red column should
+          sound as close to the original as possible</strong>, while the <strong>other column should have a different timbre with the original one</strong>.</p>
+</div>
+
+
+    <h2>The generated result of autoencoder for source: Current Piano</h2>
     <div>
       <table border = "1" class="inlineTable">
         <col width="50">
@@ -231,11 +261,12 @@ h2 {
         <tr>
           <th/>
           <th/>
+<!--            <th colspan="0">Source</th>-->
           <th colspan="2">Target</th>
         </tr>
         <tr>
              <th/>
-             <th>Original</th>
+             <th>Original_Current</th>
 
              <th>Forte_Piano</th>
 
@@ -781,9 +812,38 @@ h2 {
 
         </tr>
 
+      </table>
+    </div>
 
+
+  <div>
+    <table border = "1" class="inlineTable">
+        <col width="50">
+
+        <col width="200">
+
+        <col width="200">
+
+        <col width="200">
+
+        <tr>
+          <th/>
+          <th/>
+          <th colspan="2">Target</th>
+        </tr>
+        <tr>
+             <th/>
+             <th>Original_forte</th>
+
+             <th>Forte_Piano</th>
+
+             <th>Current_Piano</th>
+
+        </tr>
+
+    <h2>The generated result of autoencoder for source: Forte Piano</h2>
           <tr>
-            <th> 5 </th>
+            <th> 1 </th>
               <td>
                <div class="audio green-audio-player">
     <div class="loading">
@@ -919,7 +979,7 @@ h2 {
 
 
           <tr>
-            <th> 6 </th>
+            <th> 2 </th>
               <td>
                <div class="audio green-audio-player">
     <div class="loading">
@@ -1055,7 +1115,7 @@ h2 {
 
 
           <tr>
-            <th> 7 </th>
+            <th> 3 </th>
               <td>
                <div class="audio green-audio-player">
     <div class="loading">
@@ -1190,7 +1250,7 @@ h2 {
         </tr>
 
           <tr>
-            <th> 8 </th>
+            <th> 4 </th>
               <td>
                <div class="audio green-audio-player">
     <div class="loading">
@@ -1324,8 +1384,932 @@ h2 {
 
         </tr>
 
+                    <tr>
+            <th> 5 </th>
+              <td>
+               <div class="audio green-audio-player">
+    <div class="loading">
+        <div class="spinner"></div>
+    </div>
+    <div class="play-pause-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 18 24">
+            <path fill="#566574" fill-rule="evenodd" d="M18 12L0 24V0" class="play-pause-icon" id="playPause" />
+        </svg>
+    </div>
+
+    <div class="controls">
+        <span class="current-time">0:00</span>
+        <div class="slider" data-direction="horizontal">
+            <div class="progress">
+                <div class="pin" id="progress-pin-1" data-method="rewind"></div>
+            </div>
+        </div>
+        <span class="total-time">0:00</span>
+    </div>
+
+    <div class="volume">
+        <div class="volume-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path fill="#566574" fill-rule="evenodd" d="M14.667 0v2.747c3.853 1.146 6.666 4.72 6.666 8.946 0 4.227-2.813 7.787-6.666 8.934v2.76C20 22.173 24 17.4 24 11.693 24 5.987 20 1.213 14.667 0zM18 11.693c0-2.36-1.333-4.386-3.333-5.373v10.707c2-.947 3.333-2.987 3.333-5.334zm-18-4v8h5.333L12 22.36V1.027L5.333 7.693H0z" id="speaker" />
+            </svg>
+        </div>
+        <div class="volume-controls hidden">
+            <div class="slider" data-direction="vertical">
+                <div class="progress">
+                    <div class="pin" id="volume-pin-1" data-method="changeVolume"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <audio crossorigin>
+        <source src="music/9/18.mp3" type="audio/mpeg">
+    </audio>
+</div>
+
+              </td>
+
+              <td>
+                 <div class="audio green-audio-player highlighted-player">
+    <div class="loading">
+        <div class="spinner"></div>
+    </div>
+    <div class="play-pause-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 18 24">
+            <path fill="#566574" fill-rule="evenodd" d="M18 12L0 24V0" class="play-pause-icon" id="playPause" />
+        </svg>
+    </div>
+
+    <div class="controls">
+        <span class="current-time">0:00</span>
+        <div class="slider" data-direction="horizontal">
+            <div class="progress">
+                <div class="pin" id="progress-pin" data-method="rewind"></div>
+            </div>
+        </div>
+        <span class="total-time">0:00</span>
+    </div>
+
+    <div class="volume">
+        <div class="volume-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path fill="#566574" fill-rule="evenodd" d="M14.667 0v2.747c3.853 1.146 6.666 4.72 6.666 8.946 0 4.227-2.813 7.787-6.666 8.934v2.76C20 22.173 24 17.4 24 11.693 24 5.987 20 1.213 14.667 0zM18 11.693c0-2.36-1.333-4.386-3.333-5.373v10.707c2-.947 3.333-2.987 3.333-5.334zm-18-4v8h5.333L12 22.36V1.027L5.333 7.693H0z" id="speaker" />
+            </svg>
+        </div>
+        <div class="volume-controls hidden">
+            <div class="slider" data-direction="vertical">
+                <div class="progress">
+                    <div class="pin" id="volume-pin" data-method="changeVolume"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <audio crossorigin>
+        <source src="music/9/0.mp3" type="audio/mpeg">
+    </audio>
+</div>
+
+              </td>
 
 
+            <td>
+                <div class="audio green-audio-player">
+    <div class="loading">
+        <div class="spinner"></div>
+    </div>
+    <div class="play-pause-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 18 24">
+            <path fill="#566574" fill-rule="evenodd" d="M18 12L0 24V0" class="play-pause-icon" id="playPause" />
+        </svg>
+    </div>
+
+    <div class="controls">
+        <span class="current-time">0:00</span>
+        <div class="slider" data-direction="horizontal">
+            <div class="progress">
+                <div class="pin" id="progress-pin-1" data-method="rewind"></div>
+            </div>
+        </div>
+        <span class="total-time">0:00</span>
+    </div>
+
+    <div class="volume">
+        <div class="volume-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path fill="#566574" fill-rule="evenodd" d="M14.667 0v2.747c3.853 1.146 6.666 4.72 6.666 8.946 0 4.227-2.813 7.787-6.666 8.934v2.76C20 22.173 24 17.4 24 11.693 24 5.987 20 1.213 14.667 0zM18 11.693c0-2.36-1.333-4.386-3.333-5.373v10.707c2-.947 3.333-2.987 3.333-5.334zm-18-4v8h5.333L12 22.36V1.027L5.333 7.693H0z" id="speaker" />
+            </svg>
+        </div>
+        <div class="volume-controls hidden">
+            <div class="slider" data-direction="vertical">
+                <div class="progress">
+                    <div class="pin" id="volume-pin-1" data-method="changeVolume"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <audio crossorigin>
+        <source src="music/9/1.mp3" type="audio/mpeg">
+    </audio>
+</div>
+
+           </td>
+
+
+        </tr>
+
+
+
+
+      </table>
+    </div>
+
+
+    <div>
+    <table border = "1" class="inlineTable">
+        <col width="50">
+
+        <col width="200">
+
+        <col width="200">
+
+
+        <tr>
+          <th/>
+          <th/>
+          <th colspan="2">Target</th>
+        </tr>
+        <tr>
+             <th/>
+             <th>Original_Current</th>
+
+             <th>Forte_Piano</th>
+
+
+        </tr>
+
+    <h2>The generated result of GAN for source: Current Piano</h2>
+          <tr>
+            <th> 1 </th>
+              <td>
+               <div class="audio green-audio-player">
+    <div class="loading">
+        <div class="spinner"></div>
+    </div>
+    <div class="play-pause-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 18 24">
+            <path fill="#566574" fill-rule="evenodd" d="M18 12L0 24V0" class="play-pause-icon" id="playPause" />
+        </svg>
+    </div>
+
+    <div class="controls">
+        <span class="current-time">0:00</span>
+        <div class="slider" data-direction="horizontal">
+            <div class="progress">
+                <div class="pin" id="progress-pin-1" data-method="rewind"></div>
+            </div>
+        </div>
+        <span class="total-time">0:00</span>
+    </div>
+
+    <div class="volume">
+        <div class="volume-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path fill="#566574" fill-rule="evenodd" d="M14.667 0v2.747c3.853 1.146 6.666 4.72 6.666 8.946 0 4.227-2.813 7.787-6.666 8.934v2.76C20 22.173 24 17.4 24 11.693 24 5.987 20 1.213 14.667 0zM18 11.693c0-2.36-1.333-4.386-3.333-5.373v10.707c2-.947 3.333-2.987 3.333-5.334zm-18-4v8h5.333L12 22.36V1.027L5.333 7.693H0z" id="speaker" />
+            </svg>
+        </div>
+        <div class="volume-controls hidden">
+            <div class="slider" data-direction="vertical">
+                <div class="progress">
+                    <div class="pin" id="volume-pin-1" data-method="changeVolume"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <audio crossorigin>
+        <source src="output/x/1/0.mp3" type="audio/mpeg">
+    </audio>
+</div>
+
+              </td>
+
+            <td>
+                <div class="audio green-audio-player">
+    <div class="loading">
+        <div class="spinner"></div>
+    </div>
+    <div class="play-pause-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 18 24">
+            <path fill="#566574" fill-rule="evenodd" d="M18 12L0 24V0" class="play-pause-icon" id="playPause" />
+        </svg>
+    </div>
+
+    <div class="controls">
+        <span class="current-time">0:00</span>
+        <div class="slider" data-direction="horizontal">
+            <div class="progress">
+                <div class="pin" id="progress-pin-1" data-method="rewind"></div>
+            </div>
+        </div>
+        <span class="total-time">0:00</span>
+    </div>
+
+    <div class="volume">
+        <div class="volume-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path fill="#566574" fill-rule="evenodd" d="M14.667 0v2.747c3.853 1.146 6.666 4.72 6.666 8.946 0 4.227-2.813 7.787-6.666 8.934v2.76C20 22.173 24 17.4 24 11.693 24 5.987 20 1.213 14.667 0zM18 11.693c0-2.36-1.333-4.386-3.333-5.373v10.707c2-.947 3.333-2.987 3.333-5.334zm-18-4v8h5.333L12 22.36V1.027L5.333 7.693H0z" id="speaker" />
+            </svg>
+        </div>
+        <div class="volume-controls hidden">
+            <div class="slider" data-direction="vertical">
+                <div class="progress">
+                    <div class="pin" id="volume-pin-1" data-method="changeVolume"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <audio crossorigin>
+        <source src="output/x/1/1.mp3" type="audio/mpeg">
+    </audio>
+</div>
+
+           </td>
+
+
+        </tr>
+
+
+          <tr>
+            <th> 2 </th>
+              <td>
+               <div class="audio green-audio-player">
+    <div class="loading">
+        <div class="spinner"></div>
+    </div>
+    <div class="play-pause-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 18 24">
+            <path fill="#566574" fill-rule="evenodd" d="M18 12L0 24V0" class="play-pause-icon" id="playPause" />
+        </svg>
+    </div>
+
+    <div class="controls">
+        <span class="current-time">0:00</span>
+        <div class="slider" data-direction="horizontal">
+            <div class="progress">
+                <div class="pin" id="progress-pin-1" data-method="rewind"></div>
+            </div>
+        </div>
+        <span class="total-time">0:00</span>
+    </div>
+
+    <div class="volume">
+        <div class="volume-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path fill="#566574" fill-rule="evenodd" d="M14.667 0v2.747c3.853 1.146 6.666 4.72 6.666 8.946 0 4.227-2.813 7.787-6.666 8.934v2.76C20 22.173 24 17.4 24 11.693 24 5.987 20 1.213 14.667 0zM18 11.693c0-2.36-1.333-4.386-3.333-5.373v10.707c2-.947 3.333-2.987 3.333-5.334zm-18-4v8h5.333L12 22.36V1.027L5.333 7.693H0z" id="speaker" />
+            </svg>
+        </div>
+        <div class="volume-controls hidden">
+            <div class="slider" data-direction="vertical">
+                <div class="progress">
+                    <div class="pin" id="volume-pin-1" data-method="changeVolume"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <audio crossorigin>
+        <source src="output/x/2/0.mp3" type="audio/mpeg">
+    </audio>
+</div>
+
+              </td>
+
+            <td>
+                <div class="audio green-audio-player">
+    <div class="loading">
+        <div class="spinner"></div>
+    </div>
+    <div class="play-pause-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 18 24">
+            <path fill="#566574" fill-rule="evenodd" d="M18 12L0 24V0" class="play-pause-icon" id="playPause" />
+        </svg>
+    </div>
+
+    <div class="controls">
+        <span class="current-time">0:00</span>
+        <div class="slider" data-direction="horizontal">
+            <div class="progress">
+                <div class="pin" id="progress-pin-1" data-method="rewind"></div>
+            </div>
+        </div>
+        <span class="total-time">0:00</span>
+    </div>
+
+    <div class="volume">
+        <div class="volume-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path fill="#566574" fill-rule="evenodd" d="M14.667 0v2.747c3.853 1.146 6.666 4.72 6.666 8.946 0 4.227-2.813 7.787-6.666 8.934v2.76C20 22.173 24 17.4 24 11.693 24 5.987 20 1.213 14.667 0zM18 11.693c0-2.36-1.333-4.386-3.333-5.373v10.707c2-.947 3.333-2.987 3.333-5.334zm-18-4v8h5.333L12 22.36V1.027L5.333 7.693H0z" id="speaker" />
+            </svg>
+        </div>
+        <div class="volume-controls hidden">
+            <div class="slider" data-direction="vertical">
+                <div class="progress">
+                    <div class="pin" id="volume-pin-1" data-method="changeVolume"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <audio crossorigin>
+        <source src="output/x/2/1.mp3" type="audio/mpeg">
+    </audio>
+</div>
+
+           </td>
+
+
+        </tr>
+
+
+          <tr>
+            <th> 3 </th>
+              <td>
+               <div class="audio green-audio-player">
+    <div class="loading">
+        <div class="spinner"></div>
+    </div>
+    <div class="play-pause-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 18 24">
+            <path fill="#566574" fill-rule="evenodd" d="M18 12L0 24V0" class="play-pause-icon" id="playPause" />
+        </svg>
+    </div>
+
+    <div class="controls">
+        <span class="current-time">0:00</span>
+        <div class="slider" data-direction="horizontal">
+            <div class="progress">
+                <div class="pin" id="progress-pin-1" data-method="rewind"></div>
+            </div>
+        </div>
+        <span class="total-time">0:00</span>
+    </div>
+
+    <div class="volume">
+        <div class="volume-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path fill="#566574" fill-rule="evenodd" d="M14.667 0v2.747c3.853 1.146 6.666 4.72 6.666 8.946 0 4.227-2.813 7.787-6.666 8.934v2.76C20 22.173 24 17.4 24 11.693 24 5.987 20 1.213 14.667 0zM18 11.693c0-2.36-1.333-4.386-3.333-5.373v10.707c2-.947 3.333-2.987 3.333-5.334zm-18-4v8h5.333L12 22.36V1.027L5.333 7.693H0z" id="speaker" />
+            </svg>
+        </div>
+        <div class="volume-controls hidden">
+            <div class="slider" data-direction="vertical">
+                <div class="progress">
+                    <div class="pin" id="volume-pin-1" data-method="changeVolume"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <audio crossorigin>
+        <source src="output/x/3/0.mp3" type="audio/mpeg">
+    </audio>
+</div>
+
+              </td>
+
+            <td>
+                <div class="audio green-audio-player">
+    <div class="loading">
+        <div class="spinner"></div>
+    </div>
+    <div class="play-pause-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 18 24">
+            <path fill="#566574" fill-rule="evenodd" d="M18 12L0 24V0" class="play-pause-icon" id="playPause" />
+        </svg>
+    </div>
+
+    <div class="controls">
+        <span class="current-time">0:00</span>
+        <div class="slider" data-direction="horizontal">
+            <div class="progress">
+                <div class="pin" id="progress-pin-1" data-method="rewind"></div>
+            </div>
+        </div>
+        <span class="total-time">0:00</span>
+    </div>
+
+    <div class="volume">
+        <div class="volume-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path fill="#566574" fill-rule="evenodd" d="M14.667 0v2.747c3.853 1.146 6.666 4.72 6.666 8.946 0 4.227-2.813 7.787-6.666 8.934v2.76C20 22.173 24 17.4 24 11.693 24 5.987 20 1.213 14.667 0zM18 11.693c0-2.36-1.333-4.386-3.333-5.373v10.707c2-.947 3.333-2.987 3.333-5.334zm-18-4v8h5.333L12 22.36V1.027L5.333 7.693H0z" id="speaker" />
+            </svg>
+        </div>
+        <div class="volume-controls hidden">
+            <div class="slider" data-direction="vertical">
+                <div class="progress">
+                    <div class="pin" id="volume-pin-1" data-method="changeVolume"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <audio crossorigin>
+        <source src="output/x/3/1.mp3" type="audio/mpeg">
+    </audio>
+</div>
+
+           </td>
+
+
+        </tr>
+
+            <tr>
+            <th> 4 </th>
+              <td>
+               <div class="audio green-audio-player">
+    <div class="loading">
+        <div class="spinner"></div>
+    </div>
+    <div class="play-pause-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 18 24">
+            <path fill="#566574" fill-rule="evenodd" d="M18 12L0 24V0" class="play-pause-icon" id="playPause" />
+        </svg>
+    </div>
+
+    <div class="controls">
+        <span class="current-time">0:00</span>
+        <div class="slider" data-direction="horizontal">
+            <div class="progress">
+                <div class="pin" id="progress-pin-1" data-method="rewind"></div>
+            </div>
+        </div>
+        <span class="total-time">0:00</span>
+    </div>
+
+    <div class="volume">
+        <div class="volume-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path fill="#566574" fill-rule="evenodd" d="M14.667 0v2.747c3.853 1.146 6.666 4.72 6.666 8.946 0 4.227-2.813 7.787-6.666 8.934v2.76C20 22.173 24 17.4 24 11.693 24 5.987 20 1.213 14.667 0zM18 11.693c0-2.36-1.333-4.386-3.333-5.373v10.707c2-.947 3.333-2.987 3.333-5.334zm-18-4v8h5.333L12 22.36V1.027L5.333 7.693H0z" id="speaker" />
+            </svg>
+        </div>
+        <div class="volume-controls hidden">
+            <div class="slider" data-direction="vertical">
+                <div class="progress">
+                    <div class="pin" id="volume-pin-1" data-method="changeVolume"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <audio crossorigin>
+        <source src="output/x/4/0.mp3" type="audio/mpeg">
+    </audio>
+</div>
+
+              </td>
+
+            <td>
+                <div class="audio green-audio-player">
+    <div class="loading">
+        <div class="spinner"></div>
+    </div>
+    <div class="play-pause-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 18 24">
+            <path fill="#566574" fill-rule="evenodd" d="M18 12L0 24V0" class="play-pause-icon" id="playPause" />
+        </svg>
+    </div>
+
+    <div class="controls">
+        <span class="current-time">0:00</span>
+        <div class="slider" data-direction="horizontal">
+            <div class="progress">
+                <div class="pin" id="progress-pin-1" data-method="rewind"></div>
+            </div>
+        </div>
+        <span class="total-time">0:00</span>
+    </div>
+
+    <div class="volume">
+        <div class="volume-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path fill="#566574" fill-rule="evenodd" d="M14.667 0v2.747c3.853 1.146 6.666 4.72 6.666 8.946 0 4.227-2.813 7.787-6.666 8.934v2.76C20 22.173 24 17.4 24 11.693 24 5.987 20 1.213 14.667 0zM18 11.693c0-2.36-1.333-4.386-3.333-5.373v10.707c2-.947 3.333-2.987 3.333-5.334zm-18-4v8h5.333L12 22.36V1.027L5.333 7.693H0z" id="speaker" />
+            </svg>
+        </div>
+        <div class="volume-controls hidden">
+            <div class="slider" data-direction="vertical">
+                <div class="progress">
+                    <div class="pin" id="volume-pin-1" data-method="changeVolume"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <audio crossorigin>
+        <source src="output/x/4/1.mp3" type="audio/mpeg">
+    </audio>
+</div>
+
+           </td>
+
+
+        </tr>
+
+      </table>
+    </div>
+
+      <div>
+    <table border = "1" class="inlineTable">
+        <col width="50">
+
+        <col width="200">
+
+        <col width="200">
+
+
+        <tr>
+          <th/>
+          <th/>
+          <th colspan="2">Target</th>
+        </tr>
+        <tr>
+             <th/>
+             <th>Original_Forte</th>
+
+             <th>Current_Piano</th>
+
+
+        </tr>
+
+    <h2>The generated result of GAN for source: Forte Piano</h2>
+          <tr>
+            <th> 1 </th>
+              <td>
+               <div class="audio green-audio-player">
+    <div class="loading">
+        <div class="spinner"></div>
+    </div>
+    <div class="play-pause-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 18 24">
+            <path fill="#566574" fill-rule="evenodd" d="M18 12L0 24V0" class="play-pause-icon" id="playPause" />
+        </svg>
+    </div>
+
+    <div class="controls">
+        <span class="current-time">0:00</span>
+        <div class="slider" data-direction="horizontal">
+            <div class="progress">
+                <div class="pin" id="progress-pin-1" data-method="rewind"></div>
+            </div>
+        </div>
+        <span class="total-time">0:00</span>
+    </div>
+
+    <div class="volume">
+        <div class="volume-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path fill="#566574" fill-rule="evenodd" d="M14.667 0v2.747c3.853 1.146 6.666 4.72 6.666 8.946 0 4.227-2.813 7.787-6.666 8.934v2.76C20 22.173 24 17.4 24 11.693 24 5.987 20 1.213 14.667 0zM18 11.693c0-2.36-1.333-4.386-3.333-5.373v10.707c2-.947 3.333-2.987 3.333-5.334zm-18-4v8h5.333L12 22.36V1.027L5.333 7.693H0z" id="speaker" />
+            </svg>
+        </div>
+        <div class="volume-controls hidden">
+            <div class="slider" data-direction="vertical">
+                <div class="progress">
+                    <div class="pin" id="volume-pin-1" data-method="changeVolume"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <audio crossorigin>
+        <source src="output/g/1/0.mp3" type="audio/mpeg">
+    </audio>
+</div>
+
+              </td>
+
+            <td>
+                <div class="audio green-audio-player">
+    <div class="loading">
+        <div class="spinner"></div>
+    </div>
+    <div class="play-pause-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 18 24">
+            <path fill="#566574" fill-rule="evenodd" d="M18 12L0 24V0" class="play-pause-icon" id="playPause" />
+        </svg>
+    </div>
+
+    <div class="controls">
+        <span class="current-time">0:00</span>
+        <div class="slider" data-direction="horizontal">
+            <div class="progress">
+                <div class="pin" id="progress-pin-1" data-method="rewind"></div>
+            </div>
+        </div>
+        <span class="total-time">0:00</span>
+    </div>
+
+    <div class="volume">
+        <div class="volume-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path fill="#566574" fill-rule="evenodd" d="M14.667 0v2.747c3.853 1.146 6.666 4.72 6.666 8.946 0 4.227-2.813 7.787-6.666 8.934v2.76C20 22.173 24 17.4 24 11.693 24 5.987 20 1.213 14.667 0zM18 11.693c0-2.36-1.333-4.386-3.333-5.373v10.707c2-.947 3.333-2.987 3.333-5.334zm-18-4v8h5.333L12 22.36V1.027L5.333 7.693H0z" id="speaker" />
+            </svg>
+        </div>
+        <div class="volume-controls hidden">
+            <div class="slider" data-direction="vertical">
+                <div class="progress">
+                    <div class="pin" id="volume-pin-1" data-method="changeVolume"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <audio crossorigin>
+        <source src="output/g/1/1.mp3" type="audio/mpeg">
+    </audio>
+</div>
+
+           </td>
+
+
+        </tr>
+
+
+          <tr>
+            <th> 2 </th>
+              <td>
+               <div class="audio green-audio-player">
+    <div class="loading">
+        <div class="spinner"></div>
+    </div>
+    <div class="play-pause-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 18 24">
+            <path fill="#566574" fill-rule="evenodd" d="M18 12L0 24V0" class="play-pause-icon" id="playPause" />
+        </svg>
+    </div>
+
+    <div class="controls">
+        <span class="current-time">0:00</span>
+        <div class="slider" data-direction="horizontal">
+            <div class="progress">
+                <div class="pin" id="progress-pin-1" data-method="rewind"></div>
+            </div>
+        </div>
+        <span class="total-time">0:00</span>
+    </div>
+
+    <div class="volume">
+        <div class="volume-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path fill="#566574" fill-rule="evenodd" d="M14.667 0v2.747c3.853 1.146 6.666 4.72 6.666 8.946 0 4.227-2.813 7.787-6.666 8.934v2.76C20 22.173 24 17.4 24 11.693 24 5.987 20 1.213 14.667 0zM18 11.693c0-2.36-1.333-4.386-3.333-5.373v10.707c2-.947 3.333-2.987 3.333-5.334zm-18-4v8h5.333L12 22.36V1.027L5.333 7.693H0z" id="speaker" />
+            </svg>
+        </div>
+        <div class="volume-controls hidden">
+            <div class="slider" data-direction="vertical">
+                <div class="progress">
+                    <div class="pin" id="volume-pin-1" data-method="changeVolume"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <audio crossorigin>
+        <source src="output/g/2/0.mp3" type="audio/mpeg">
+    </audio>
+</div>
+
+              </td>
+
+            <td>
+                <div class="audio green-audio-player">
+    <div class="loading">
+        <div class="spinner"></div>
+    </div>
+    <div class="play-pause-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 18 24">
+            <path fill="#566574" fill-rule="evenodd" d="M18 12L0 24V0" class="play-pause-icon" id="playPause" />
+        </svg>
+    </div>
+
+    <div class="controls">
+        <span class="current-time">0:00</span>
+        <div class="slider" data-direction="horizontal">
+            <div class="progress">
+                <div class="pin" id="progress-pin-1" data-method="rewind"></div>
+            </div>
+        </div>
+        <span class="total-time">0:00</span>
+    </div>
+
+    <div class="volume">
+        <div class="volume-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path fill="#566574" fill-rule="evenodd" d="M14.667 0v2.747c3.853 1.146 6.666 4.72 6.666 8.946 0 4.227-2.813 7.787-6.666 8.934v2.76C20 22.173 24 17.4 24 11.693 24 5.987 20 1.213 14.667 0zM18 11.693c0-2.36-1.333-4.386-3.333-5.373v10.707c2-.947 3.333-2.987 3.333-5.334zm-18-4v8h5.333L12 22.36V1.027L5.333 7.693H0z" id="speaker" />
+            </svg>
+        </div>
+        <div class="volume-controls hidden">
+            <div class="slider" data-direction="vertical">
+                <div class="progress">
+                    <div class="pin" id="volume-pin-1" data-method="changeVolume"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <audio crossorigin>
+        <source src="output/g/2/1.mp3" type="audio/mpeg">
+    </audio>
+</div>
+
+           </td>
+
+
+        </tr>
+
+
+          <tr>
+            <th> 3 </th>
+              <td>
+               <div class="audio green-audio-player">
+    <div class="loading">
+        <div class="spinner"></div>
+    </div>
+    <div class="play-pause-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 18 24">
+            <path fill="#566574" fill-rule="evenodd" d="M18 12L0 24V0" class="play-pause-icon" id="playPause" />
+        </svg>
+    </div>
+
+    <div class="controls">
+        <span class="current-time">0:00</span>
+        <div class="slider" data-direction="horizontal">
+            <div class="progress">
+                <div class="pin" id="progress-pin-1" data-method="rewind"></div>
+            </div>
+        </div>
+        <span class="total-time">0:00</span>
+    </div>
+
+    <div class="volume">
+        <div class="volume-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path fill="#566574" fill-rule="evenodd" d="M14.667 0v2.747c3.853 1.146 6.666 4.72 6.666 8.946 0 4.227-2.813 7.787-6.666 8.934v2.76C20 22.173 24 17.4 24 11.693 24 5.987 20 1.213 14.667 0zM18 11.693c0-2.36-1.333-4.386-3.333-5.373v10.707c2-.947 3.333-2.987 3.333-5.334zm-18-4v8h5.333L12 22.36V1.027L5.333 7.693H0z" id="speaker" />
+            </svg>
+        </div>
+        <div class="volume-controls hidden">
+            <div class="slider" data-direction="vertical">
+                <div class="progress">
+                    <div class="pin" id="volume-pin-1" data-method="changeVolume"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <audio crossorigin>
+        <source src="output/g/3/0.mp3" type="audio/mpeg">
+    </audio>
+</div>
+
+              </td>
+
+            <td>
+                <div class="audio green-audio-player">
+    <div class="loading">
+        <div class="spinner"></div>
+    </div>
+    <div class="play-pause-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 18 24">
+            <path fill="#566574" fill-rule="evenodd" d="M18 12L0 24V0" class="play-pause-icon" id="playPause" />
+        </svg>
+    </div>
+
+    <div class="controls">
+        <span class="current-time">0:00</span>
+        <div class="slider" data-direction="horizontal">
+            <div class="progress">
+                <div class="pin" id="progress-pin-1" data-method="rewind"></div>
+            </div>
+        </div>
+        <span class="total-time">0:00</span>
+    </div>
+
+    <div class="volume">
+        <div class="volume-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path fill="#566574" fill-rule="evenodd" d="M14.667 0v2.747c3.853 1.146 6.666 4.72 6.666 8.946 0 4.227-2.813 7.787-6.666 8.934v2.76C20 22.173 24 17.4 24 11.693 24 5.987 20 1.213 14.667 0zM18 11.693c0-2.36-1.333-4.386-3.333-5.373v10.707c2-.947 3.333-2.987 3.333-5.334zm-18-4v8h5.333L12 22.36V1.027L5.333 7.693H0z" id="speaker" />
+            </svg>
+        </div>
+        <div class="volume-controls hidden">
+            <div class="slider" data-direction="vertical">
+                <div class="progress">
+                    <div class="pin" id="volume-pin-1" data-method="changeVolume"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <audio crossorigin>
+        <source src="output/g/3/1.mp3" type="audio/mpeg">
+    </audio>
+</div>
+
+           </td>
+
+
+        </tr>
+
+
+
+            <tr>
+            <th> 4 </th>
+              <td>
+               <div class="audio green-audio-player">
+    <div class="loading">
+        <div class="spinner"></div>
+    </div>
+    <div class="play-pause-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 18 24">
+            <path fill="#566574" fill-rule="evenodd" d="M18 12L0 24V0" class="play-pause-icon" id="playPause" />
+        </svg>
+    </div>
+
+    <div class="controls">
+        <span class="current-time">0:00</span>
+        <div class="slider" data-direction="horizontal">
+            <div class="progress">
+                <div class="pin" id="progress-pin-1" data-method="rewind"></div>
+            </div>
+        </div>
+        <span class="total-time">0:00</span>
+    </div>
+
+    <div class="volume">
+        <div class="volume-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path fill="#566574" fill-rule="evenodd" d="M14.667 0v2.747c3.853 1.146 6.666 4.72 6.666 8.946 0 4.227-2.813 7.787-6.666 8.934v2.76C20 22.173 24 17.4 24 11.693 24 5.987 20 1.213 14.667 0zM18 11.693c0-2.36-1.333-4.386-3.333-5.373v10.707c2-.947 3.333-2.987 3.333-5.334zm-18-4v8h5.333L12 22.36V1.027L5.333 7.693H0z" id="speaker" />
+            </svg>
+        </div>
+        <div class="volume-controls hidden">
+            <div class="slider" data-direction="vertical">
+                <div class="progress">
+                    <div class="pin" id="volume-pin-1" data-method="changeVolume"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <audio crossorigin>
+        <source src="output/g/4/0.mp3" type="audio/mpeg">
+    </audio>
+</div>
+
+              </td>
+
+            <td>
+                <div class="audio green-audio-player">
+    <div class="loading">
+        <div class="spinner"></div>
+    </div>
+    <div class="play-pause-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 18 24">
+            <path fill="#566574" fill-rule="evenodd" d="M18 12L0 24V0" class="play-pause-icon" id="playPause" />
+        </svg>
+    </div>
+
+    <div class="controls">
+        <span class="current-time">0:00</span>
+        <div class="slider" data-direction="horizontal">
+            <div class="progress">
+                <div class="pin" id="progress-pin-1" data-method="rewind"></div>
+            </div>
+        </div>
+        <span class="total-time">0:00</span>
+    </div>
+
+    <div class="volume">
+        <div class="volume-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path fill="#566574" fill-rule="evenodd" d="M14.667 0v2.747c3.853 1.146 6.666 4.72 6.666 8.946 0 4.227-2.813 7.787-6.666 8.934v2.76C20 22.173 24 17.4 24 11.693 24 5.987 20 1.213 14.667 0zM18 11.693c0-2.36-1.333-4.386-3.333-5.373v10.707c2-.947 3.333-2.987 3.333-5.334zm-18-4v8h5.333L12 22.36V1.027L5.333 7.693H0z" id="speaker" />
+            </svg>
+        </div>
+        <div class="volume-controls hidden">
+            <div class="slider" data-direction="vertical">
+                <div class="progress">
+                    <div class="pin" id="volume-pin-1" data-method="changeVolume"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <audio crossorigin>
+        <source src="output/g/4/1.mp3" type="audio/mpeg">
+    </audio>
+</div>
+
+           </td>
+
+
+        </tr>
 
       </table>
     </div>
