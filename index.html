@@ -2,7 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-    <title>Samples for Autoencoder based Music Translation</title>
+    <title>Samples for Forte Piano Restoration Model</title>
     <style type="text/css">
 body, input, select, td, li, div, textarea, p {
 	font-size: 11px;
@@ -1527,6 +1527,10 @@ img.center-resize {
 
 
     <div>
+            <h2>Introduction</h2>
+  <p> The second proposed audio style transfer algorithm is inspired by image style transfer techniques like UNIT and CycleGAN. Focusing on timbre as the 'style' for audio, this method builds upon AutoVC and TimbreTron approaches, using spectrograms and WaveNet for sound transformation. The algorithm integrates a VAE-GAN structure, encoding both content and style. It then decodes with the desired style, while a discriminator ensures realistic output. With domain-specific blocks in the encoder and decoder and multiple loss functions, it enhances realism and content integrity. Once trained, the algorithm can modify the timbre of audio using spectrogram processing, converting results to audio through methods like Griffin Lim and WaveNet.
+  </p>
+
     <table border = "1" class="inlineTable">
         <col width="50">
 
